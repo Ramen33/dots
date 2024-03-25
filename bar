@@ -1,0 +1,75 @@
+#!/bin/env sh
+
+printf "$$" > ~/.cache/pidofbar
+sec=0
+
+update_cpu () {
+	cpu="$(grep -o "^[^ ]*" /proc/loadavg )"
+}
+
+update_ram () {
+	ram="$(free -h | sed -n "2s/\([^ ]* *\)\{2\}\([^ ]*\).*/\2/p")"
+}
+
+update_time () {
+	time="$(date "+  %b  %d  %Y  %a   %I:%M:%S %p")"
+}
+
+update_weather () {
+	weather="$(curl -s "wttr.in/Hawler?format="%t+%h+%w+%M""| sed -E "s/^(.).*\+/\1/")"
+}
+
+update_bat () {
+	read -r bat_status </sys/class/power_supply/BAT0/status
+	read -r bat_capacity </sys/class/power_supply/BAT0/capacity
+	bat="$bat_capacity% $bat_status"
+}
+
+update_temp () {
+
+	temp="$(cat /sys/class/thermal/thermal_zone0/temp | sed 's/^\(..\).*/\1/')"
+}
+
+update_vol () {
+	vol="$([ "$(pamixer --get-mute)" = "false" ] && printf 'VOL: ' || printf 'MUTE ')$(pamixer --get-volume)%"
+}
+
+update_backlight () {
+	read -r actual_brightness </sys/class/backlight/intel_backlight/actual_brightness
+	read -r max_brightness </sys/class/backlight/intel_backlight/max_brightness
+	backlight="BRI: $((actual_brightness*100/max_brightness))%"
+}
+update_kern () {
+
+	kern="$(uname -r)"
+}
+#update_event () {
+#	event="$(calcurse -n | sed 1d | \
+#		sed -E "s_^ *\[(.*):(.*)\] ([^\t]*)\t?.*_[\1h \2m->\3]_")"
+#	[ "[]" = "$event" ] && event=""
+#}
+update_vol
+update_backlight
+display () {
+	xsetroot -name " Hawler: $weather < RAM: $ram  CPU: $cpu <  $temp C <  $kern <   $bat <  $backlight <  $vol < $time "
+}
+trap	"update_vol;display"		"RTMIN"
+trap	"update_backlight;display" 	"RTMIN+1"
+trap	"update_bat;display" 		"RTMIN+2"
+
+while true
+do
+	sleep 1 & wait && {
+		[ $((sec % 1 )) -eq 0 ] && update_time
+		[ $((sec % 1)) -eq 0 ] && update_cpu
+	        [ $((sec % 3)) -eq 0 ] && update_temp
+		[ $((sec % 1)) -eq 0 ] && update_ram
+		[ $((sec % 1)) -eq 0 ] && update_bat
+		[ $((sec % 3600)) -eq 2 ] && update_weather
+                [ $((sec % 1)) -eq 0 ] && update_vol
+                [ $((sec % 1)) -eq 0 ] && update_backlight
+		[ $((sec % 3600)) -eq 0 ] && update_kern
+		[ $((sec % 1 )) -eq 0 ] && display
+		sec=$((sec + 1))
+	}
+done
