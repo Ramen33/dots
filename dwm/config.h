@@ -59,6 +59,8 @@ static const char *tools[] = { "lxqt-config", NULL };
 static const char *off[] = { "shutdown", "now", NULL };
 static const char *wallpaper[] = { "nitrogen", NULL };
 static const char *weather[] = {"mousam",  NULL};
+static const char *mail[] = {"thunderbird", NULL };
+static const char *lf[] = { "st", "lf", NULL };
 
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
@@ -105,7 +107,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
-	{ MODKEY,                       XK_s,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstackvis,     {.i = +1 } },
@@ -122,8 +124,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                                 XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_Down,   moveresize,     {.v = "0x 25y 0w 0h" } },
 	{ MODKEY,                       XK_Up,     moveresize,     {.v = "0x -25y 0w 0h" } },
 	{ MODKEY,                       XK_Right,  moveresize,     {.v = "25x 0y 0w 0h" } },
@@ -187,17 +189,17 @@ static const Key keys[] = {
     	{ 0,                       XF86XK_AudioMute, spawn, {.v = mutevol } },
     	{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol  } },
 	{ 0,                       XF86XK_AudioMicMute,        spawn, {.v = mutemic } },
-	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = upvol1 } },
-	{ MODKEY,                  XF86XK_AudioLowerVolume,    spawn, {.v = downvol1 } },
 	{ 0,                       XF86XK_Tools,               spawn, {.v = tools } },
 	{ 0,                       XF86XK_Explorer,            spawn, {.v = rofi } },
 	{ 0,                       XK_Print,          spawn, {.v = prtsc } },
 	{ 0,                       XF86XK_Search,     spawn, {.v = search } },
+	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = upvol1 } },
+	{ MODKEY,                  XF86XK_AudioLowerVolume,    spawn, {.v = downvol1 } },
 	{ MODKEY,                  XK_Escape,         spawn, {.v = off } },
 	{ MODKEY,                  XK_Print,          spawn, {.v = scrot } },
 	{ MODKEY,                  XF86XK_AudioMute,    spawn, {.v = soundc } },
 	{MODKEY,          XK_w,     spawn, {.v = firefox}, },
-        {MODKEY,          XK_d,            spawn, {.v = rofi},},
+        {MODKEY,          XK_s,            spawn, {.v = rofi},},
 //        {MODKEY,          XK_F12,           spawn, {.v = suspend}, },
 	{MODKEY,            XK_v,             spawn, {.v = suspend}, },
 	{MODKEY,      XK_z,       spawn,   {.v = slock}, },
@@ -209,6 +211,8 @@ static const Key keys[] = {
 	{ MODKEY,               XK_m,      spawn,    {.v = weather} },
 	{ MODKEY,               XK_g,      spawn,    {.v = gedit} },
 	{ MODKEY,               XK_F11,    spawn,    {.v = wallpaper } },
+	{ MODKEY,          XF86XK_LaunchA,    spawn,    {.v = mail } },
+	{ MODKEY,               XK_e,         spawn,    {.v = lf } },
 };
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
@@ -216,7 +220,7 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
