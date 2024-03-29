@@ -32,36 +32,6 @@ static const char *colors[][3]      = {
 	[SchemeHid]  = { col_cyan,  col_gray1, col_cyan  },
 };
 
-static const char *upvol[]   = { "/usr/bin/amixer", "-D", "pulse",  "sset", "Master", "5%+",     NULL };
-static const char *downvol[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "5%-",     NULL };
-static const char *upvol1[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%+", NULL };
-static const char *downvol1[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%-", NULL };
-static const char *mutevol[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "toggle",  NULL };
-static const char *mutemic[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Capture", "toggle", NULL };
-static const char *briup[] = { "brightnessctl", "set", "10%+", NULL };
-static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
-
-static const char *rofi[] = {"/usr/bin/rofi", "-show", "drun", NULL };
-static const char *slock[] = {"/usr/local/bin/slock", NULL };
-static const char *suspend[] = {"/usr/bin/systemctl", "suspend", NULL};
-static const char *firefox[] = { "firefox", NULL };
-static const char *wireless[] = { "st", "sudo", "nmtui", NULL};
-static const char *htop[] = { "st", "sudo", "htop", NULL };
-static const char *nvim[] = { "st", "nvim", NULL };
-static const char *xterm[] = { "urxvt", NULL };
-static const char *file[] = { "pcmanfm", NULL };
-static const char *gedit[] = {"gedit", NULL};
-static const char *soundc[] = { "pavucontrol", NULL };
-static const char *prtsc[] = { "rofi", "-show", "drun", NULL };
-static const char *scrot[] = { "scrot", NULL};
-static const char *search[] = { "fsearch", NULL };
-static const char *tools[] = { "lxqt-config", NULL };
-static const char *off[] = { "shutdown", "now", NULL };
-static const char *wallpaper[] = { "nitrogen", NULL };
-static const char *weather[] = {"mousam",  NULL};
-static const char *mail[] = {"thunderbird", NULL };
-static const char *lf[] = { "st", "lf", NULL };
-
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 static const char *tags[] = { "", "", "", "", "", "", "", "", "", "", "", "", ""};
@@ -105,6 +75,35 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0";
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *upvol[]   = { "/usr/bin/amixer", "-D", "pulse",  "sset", "Master", "5%+",     NULL };
+static const char *downvol[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "5%-",     NULL };
+static const char *upvol1[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%+", NULL };
+static const char *downvol1[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%-", NULL };
+static const char *mutevol[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "toggle",  NULL };
+static const char *mutemic[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Capture", "toggle", NULL };
+static const char *briup[] = { "brightnessctl", "set", "10%+", NULL };
+static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
+
+static const char *rofi[] = {"/usr/bin/rofi", "-show", "drun", NULL };
+static const char *slock[] = {"/usr/local/bin/slock", NULL };
+static const char *suspend[] = {"/usr/bin/systemctl", "suspend", NULL};
+static const char *firefox[] = { "firefox", NULL };
+static const char *wireless[] = { "st", "sudo", "nmtui", NULL};
+static const char *htop[] = { "st", "sudo", "htop", NULL };
+static const char *nvim[] = { "st", "nvim", NULL };
+static const char *xterm[] = { "urxvt", NULL };
+static const char *file[] = { "pcmanfm", NULL };
+static const char *gedit[] = {"gedit", NULL};
+static const char *soundc[] = { "pavucontrol", NULL };
+static const char *prtsc[] = { "rofi", "-show", "drun", NULL };
+static const char *scrot[] = { "scrot", NULL};
+static const char *search[] = { "fsearch", NULL };
+static const char *tools[] = { "lxqt-config", NULL };
+static const char *off[] = { "shutdown", "now", NULL };
+static const char *wallpaper[] = { "nitrogen", NULL };
+static const char *weather[] = {"mousam",  NULL};
+static const char *mail[] = {"thunderbird", NULL };
+static const char *lf[] = { "st", "lf", NULL };
 
 static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
@@ -213,6 +212,8 @@ static const Key keys[] = {
 	{ MODKEY,               XK_F11,    spawn,    {.v = wallpaper } },
 	{ MODKEY,          XF86XK_LaunchA,    spawn,    {.v = mail } },
 	{ MODKEY,               XK_e,         spawn,    {.v = lf } },
+	{ MODKEY,               XK_Prior,     viewprev, {0} },
+	{ MODKEY,               XK_Next,      viewnext, {0} },
 };
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */

@@ -241,7 +241,8 @@ static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void xinitvisual();
 static void zoom(const Arg *arg);
-
+void viewprev(const Arg *arg);
+void viewnext(const Arg *arg);
 /* variables */
 static const char autostartblocksh[] = "autostart_blocking.sh";
 static const char autostartsh[] = "autostart.sh";
@@ -301,6 +302,27 @@ struct Pertag {
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
+
+void
+viewprev(const Arg *arg)
+{
+    if(selmon->tagset[selmon->seltags] > 1 << 0)
+        selmon->tagset[selmon->seltags] >>= 1;
+    else
+        selmon->tagset[selmon->seltags] = 1 << LENGTH(tags) - 1;
+    arrange(selmon);
+}
+
+void
+viewnext(const Arg *arg)
+{
+    if(selmon->tagset[selmon->seltags] < 1 << LENGTH(tags) - 1)
+        selmon->tagset[selmon->seltags] <<= 1;
+    else
+        selmon->tagset[selmon->seltags] = 1 << 0;
+    arrange(selmon);
+}
+
 void
 applyrules(Client *c)
 {
