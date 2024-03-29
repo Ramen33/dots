@@ -20,11 +20,11 @@ static const char *fonts[]          = { "JetBrainsMono-Bold:size=6" };
 static const char dmenufont[]       = "JetBrainsMono-Bold:size=6";
 static unsigned int baralpha        = 0xb0;
 static unsigned int borderalpha     = OPAQUE;
-/*og #222222 */ static const char col_gray1[]       = "#181818";
+static const char col_gray1[]       = "#181818"; //OG #222222
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-/*og #005577   Purple #8D6298 Bl#2e3e64*/  static const char col_cyan[]        = "#1E1E2E";
+static const char col_cyan[]        = "#1E1E2E"; //OG #005577 Purple #8D6298 Bl#2e3e64
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
