@@ -104,6 +104,7 @@ static const char *wallpaper[] = { "nitrogen", NULL };
 static const char *weather[] = {"mousam",  NULL};
 static const char *mail[] = {"thunderbird", NULL };
 static const char *lf[] = { "st", "lf", NULL };
+static const char *terminalalt[] = { "alacritty", NULL };
 
 static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
@@ -117,7 +118,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,                       XK_Return, zoom,           {0} },
+	{ MODKEY|ShiftMask,                       XK_Return, spawn,    {.v = terminalalt } },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,             XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -141,6 +142,9 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask|ShiftMask, XK_Down,   moveresizeedge, {.v = "B"} },
 	{ MODKEY|ControlMask|ShiftMask, XK_Left,   moveresizeedge, {.v = "L"} },
 	{ MODKEY|ControlMask|ShiftMask, XK_Right,  moveresizeedge, {.v = "R"} },
+        { MODKEY,                       XK_bracketleft,  setgaps,        {.i = -1 } },
+        { MODKEY,                       XK_bracketright,  setgaps,        {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_bracketright,  setgaps,        {.i = 0 } },
 	{ MODKEY,                       XK_BackSpace,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_BackSpace,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
