@@ -7,6 +7,7 @@
 #include "fibonacci.c"
 #include "layouts.c"
 #include "movestack.c"
+#define TERMINAL "st"
 
 static const unsigned int borderpx  = 0;
 static const unsigned int gappx     = 10;
@@ -24,7 +25,7 @@ static const char col_gray1[]       = "#181818"; //OG #222222
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#1E1E2E"; //OG #005577 Purple #8D6298 Bl#2e3e64
+static const char col_cyan[]        = "#1E1E2E"; //OG #005577 Purple #8D6298 Bl#2e3e64 C #1E1E2E
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -75,40 +76,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0";
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *upvol[]   = { "/usr/bin/amixer", "-D", "pulse",  "sset", "Master", "5%+",     NULL };
-static const char *downvol[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "5%-",     NULL };
-static const char *upvol1[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%+", NULL };
-static const char *downvol1[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%-", NULL };
-static const char *mutevol[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "toggle",  NULL };
-static const char *mutemic[] = { "/usr/bin/amixer", "-D", "pulse", "sset", "Capture", "toggle", NULL };
-static const char *briup[] = { "brightnessctl", "set", "10%+", NULL };
-static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
 
-static const char *rofi[] = {"/usr/bin/rofi", "-show", "drun", NULL };
-static const char *slock[] = {"/usr/local/bin/slock", NULL };
-static const char *suspend[] = {"/usr/bin/systemctl", "suspend", NULL};
-static const char *firefox[] = { "firefox", NULL };
-static const char *wireless[] = { "st", "sudo", "nmtui", NULL};
-static const char *htop[] = { "st", "sudo", "htop", NULL };
-static const char *nvim[] = { "st", "nvim", NULL };
-static const char *xterm[] = { "urxvt", NULL };
-static const char *file[] = { "pcmanfm", NULL };
-static const char *gedit[] = {"gedit", NULL};
-static const char *soundc[] = { "pavucontrol", NULL };
-static const char *prtsc[] = { "rofi", "-show", "drun", NULL };
-static const char *scrot[] = { "scrot", NULL};
-static const char *search[] = { "fsearch", NULL };
-static const char *tools[] = { "lxqt-config", NULL };
-static const char *off[] = { "shutdown", "now", NULL };
-static const char *wallpaper[] = { "nitrogen", NULL };
-static const char *weather[] = {"mousam",  NULL};
-static const char *mail[] = {"thunderbird", NULL };
-static const char *lf[] = { "st", "lf", NULL };
-static const char *terminalalt[] = { "alacritty", NULL };
 
 static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Return, spawn,          {.v = (const char*[]){"st", NULL } } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstackvis,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstackvis,     {.i = -1 } },
@@ -118,14 +90,14 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,                       XK_Return, spawn,    {.v = terminalalt } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,    {.v = (const char*[]){"alacritty", NULL } } },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,             XK_q,      killclient,     {0} },
+	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,                       XK_space,  setlayout,      {0} },
-	{ MODKEY,                                 XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_Down,   moveresize,     {.v = "0x 25y 0w 0h" } },
 	{ MODKEY,                       XK_Up,     moveresize,     {.v = "0x -25y 0w 0h" } },
 	{ MODKEY,                       XK_Right,  moveresize,     {.v = "25x 0y 0w 0h" } },
@@ -170,54 +142,55 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_i,      setlayout,  {.v = &layouts[3]} },
 	{ MODKEY,                       XK_o,      setlayout,  {.v = &layouts[4]} },
 	{ MODKEY,                       XK_p,      setlayout,  {.v = &layouts[5]} },
-	{ Mod1Mask,              XK_j,      moveresize, {.v = "0x 25y 0w 0h"} },
-	{ Mod1Mask,              XK_k,      moveresize, {.v = "0x -25y 0w 0h"} },
-        { Mod1Mask,              XK_l,      moveresize, {.v = "25x 0y 0w 0h"} },
-        { Mod1Mask,              XK_h,      moveresize, {.v = "-25x 0y 0w 0h"} },
-	{ Mod1Mask|ShiftMask,    XK_j,      moveresize, {.v = "0x 0y 0w 25h"} },
-	{ Mod1Mask|ShiftMask,    XK_k,      moveresize, {.v = "0x 0y 0w -25h"} },
-	{ Mod1Mask|ShiftMask,    XK_l,      moveresize, {.v = "0x 0y 25w 0h"} },
-	{ Mod1Mask|ShiftMask,    XK_h,      moveresize, {.v = "0x 0y -25w 0h"} },
-	{ Mod1Mask|ControlMask,  XK_k,      moveresizeedge, {.v = "t"} },
-        { Mod1Mask|ControlMask,  XK_j,      moveresizeedge, {.v = "b"} },
-        { Mod1Mask|ControlMask,  XK_h,      moveresizeedge, {.v = "l"} },
-        { Mod1Mask|ControlMask,  XK_l,      moveresizeedge, {.v = "r"} },
+	{ Mod1Mask,                     XK_j,      moveresize, {.v = "0x 25y 0w 0h"} },
+	{ Mod1Mask,                     XK_k,      moveresize, {.v = "0x -25y 0w 0h"} },
+        { Mod1Mask,                     XK_l,      moveresize, {.v = "25x 0y 0w 0h"} },
+        { Mod1Mask,                     XK_h,      moveresize, {.v = "-25x 0y 0w 0h"} },
+	{ Mod1Mask|ShiftMask,           XK_j,      moveresize, {.v = "0x 0y 0w 25h"} },
+	{ Mod1Mask|ShiftMask,           XK_k,      moveresize, {.v = "0x 0y 0w -25h"} },
+	{ Mod1Mask|ShiftMask,           XK_l,      moveresize, {.v = "0x 0y 25w 0h"} },
+	{ Mod1Mask|ShiftMask,           XK_h,      moveresize, {.v = "0x 0y -25w 0h"} },
+	{ Mod1Mask|ControlMask,         XK_k,      moveresizeedge, {.v = "t"} },
+        { Mod1Mask|ControlMask,         XK_j,      moveresizeedge, {.v = "b"} },
+        { Mod1Mask|ControlMask,         XK_h,      moveresizeedge, {.v = "l"} },
+        { Mod1Mask|ControlMask,         XK_l,      moveresizeedge, {.v = "r"} },
         { Mod1Mask|ControlMask|ShiftMask,  XK_k,      moveresizeedge, {.v = "T"} },
         { Mod1Mask|ControlMask|ShiftMask,  XK_j,      moveresizeedge, {.v = "B"} },
         { Mod1Mask|ControlMask|ShiftMask,  XK_h,      moveresizeedge, {.v = "L"} },
         { Mod1Mask|ControlMask|ShiftMask,  XK_l,      moveresizeedge, {.v = "R"} },
-        { 0,                       XF86XK_MonBrightnessUp,   spawn, {.v = briup } },
-	{ 0,                       XF86XK_MonBrightnessDown, spawn, {.v = bridown } },
-    	{ 0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
-    	{ 0,                       XF86XK_AudioMute, spawn, {.v = mutevol } },
-    	{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol  } },
-	{ 0,                       XF86XK_AudioMicMute,        spawn, {.v = mutemic } },
-	{ 0,                       XF86XK_Tools,               spawn, {.v = tools } },
-	{ 0,                       XF86XK_Explorer,            spawn, {.v = rofi } },
-	{ 0,                       XK_Print,          spawn, {.v = prtsc } },
-	{ 0,                       XF86XK_Search,     spawn, {.v = search } },
-	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = upvol1 } },
-	{ MODKEY,                  XF86XK_AudioLowerVolume,    spawn, {.v = downvol1 } },
-	{ MODKEY,                  XK_Escape,         spawn, {.v = off } },
-	{ MODKEY,                  XK_Print,          spawn, {.v = scrot } },
-	{ MODKEY,                  XF86XK_AudioMute,    spawn, {.v = soundc } },
-	{MODKEY,          XK_w,     spawn, {.v = firefox}, },
-        {MODKEY,          XK_s,            spawn, {.v = rofi},},
-//        {MODKEY,          XK_F12,           spawn, {.v = suspend}, },
-	{MODKEY,            XK_v,             spawn, {.v = suspend}, },
-	{MODKEY,      XK_z,       spawn,   {.v = slock}, },
-	{MODKEY|ShiftMask,      XK_w,      spawn,    {.v = wireless}, },
-	{MODKEY,                XK_r,      spawn,    {.v = htop}, },
-	{MODKEY,                XK_n,      spawn,    {.v = nvim}, },
-	{MODKEY,                XK_x,      spawn,    {.v = xterm}, },
-	{MODKEY,                XK_a,      spawn,    {.v = file}, },
-	{ MODKEY,               XK_m,      spawn,    {.v = weather} },
-	{ MODKEY,               XK_g,      spawn,    {.v = gedit} },
-	{ MODKEY,               XK_F11,    spawn,    {.v = wallpaper } },
-	{ MODKEY,          XF86XK_LaunchA,    spawn,    {.v = mail } },
-	{ MODKEY,               XK_e,         spawn,    {.v = lf } },
-	{ MODKEY,               XK_Prior,     viewprev, {0} },
-	{ MODKEY,               XK_Next,      viewnext, {0} },
+        { 0,                       XF86XK_MonBrightnessUp,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "10%+", NULL } } },
+        { 0,                       XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "10%-", NULL } } },
+    	{ 0,                       XF86XK_AudioLowerVolume, spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "5%-", NULL } } },
+    	{ 0,                       XF86XK_AudioMute, spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "toggle", NULL } } },
+    	{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = (const char*[]){"/usr/bin/amixer", "-D", "pulse", "sset", "Master", "5%+",     NULL } } },
+	{ 0,                       XF86XK_AudioMicMute,        spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Capture", "toggle", NULL } } },
+	{ 0,                       XF86XK_Tools,               spawn, {.v = (const char *[]){"lxqt-config", NULL} } },
+	{ 0,                       XF86XK_Explorer,            spawn, {.v = (const char *[]){"/usr/bin/rofi", "-show", "drun", NULL } } },
+	{ 0,                       XK_Print,          spawn, {.v = (const char*[]){"/usr/bin/rofi", "-show", "drun", NULL } } },
+	{ 0,                       XF86XK_Search,     spawn, {.v = (const char*[]){ "fsearch", NULL } } },
+	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%+", NULL } } },
+	{ MODKEY,                  XF86XK_AudioLowerVolume,    spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%-", NULL } } },
+	{ MODKEY,                  XK_Escape,         spawn, {.v = (const char*[]){ "off", NULL } } },
+	{ MODKEY,                  XK_Print,          spawn, {.v = (const char*[]){ "scrot", NULL } } },
+	{ MODKEY,                  XF86XK_AudioMute,    spawn, {.v = (const char*[]){ "pavucontrol", NULL } } },
+	{ MODKEY,                  XK_w,     spawn, {.v = (const char*[]){"firefox", NULL} } },
+        { MODKEY,                  XK_s,            spawn, {.v = (const char*[]){"rofi", "-show", "drun", NULL } } },
+	{ MODKEY,                  XK_v,             spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
+	{ MODKEY,                  XK_z,       spawn,   {.v = (const char*[]){"slock", NULL } } },
+	{ MODKEY|ShiftMask,        XK_w,      spawn,    {.v = (const char*[]){ TERMINAL, "sudo", "nmtui",  NULL } } },
+	{ MODKEY,                  XK_r,      spawn,    {.v = (const char*[]){ TERMINAL, "sudo", "htop",   NULL } } },
+	{ MODKEY,		   XK_n,	   spawn,    {.v = (const char*[]){ TERMINAL,  "nvim", NULL } } },
+	{ MODKEY,                  XK_x,      spawn,    {.v = (const char*[]){"urxvt", NULL } } },
+	{ MODKEY,                  XK_a,      spawn,    {.v = (const char*[]){"pcmanfm", NULL } } },
+	{ MODKEY,                  XK_m,      spawn,    {.v = (const char*[]){ "mousam", NULL } } },
+	{ MODKEY,                  XK_g,      spawn,    {.v = (const char*[]){ "gedit", NULL } } },
+	{ MODKEY,                  XK_F11,    spawn,    {.v = (const char*[]){ "nitrogen", NULL } } },
+	{ MODKEY,                  XF86XK_LaunchA,    spawn,    {.v = (const char*[]){ "thunderbird", NULL } } },
+	{ MODKEY,                  XK_e,         spawn,    {.v = (const char*[]){ TERMINAL, "lf", NULL } } },
+	{ MODKEY,                  XK_Prior,     viewprev, {0} },
+	{ MODKEY,                  XK_Next,      viewnext, {0} },
+	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} }, // Decrease size while preserving aspect ratio
+        { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },  // Increase size while preserving aspect ratio
 };
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
