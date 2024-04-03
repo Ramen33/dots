@@ -243,6 +243,7 @@ static void xinitvisual();
 static void zoom(const Arg *arg);
 void viewprev(const Arg *arg);
 void viewnext(const Arg *arg);
+void aspectresize(const Arg *arg);
 /* variables */
 static const char autostartblocksh[] = "autostart_blocking.sh";
 static const char autostartsh[] = "autostart.sh";
@@ -302,6 +303,29 @@ struct Pertag {
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
+
+
+void
+aspectresize(const Arg *arg)
+{
+    Client *c;
+    if (!selmon->sel)
+        return;
+    c = selmon->sel;
+    float aspectratio = c->w / (float)c->h; // Calculate current aspect ratio
+    float delta = *((float *)arg->v);
+    int w, h;
+
+    if (aspectratio > 1) { // If the aspect ratio is wider than tall
+        w = c->w + delta;
+        h = (w / aspectratio) + delta;
+    } else { // If the aspect ratio is taller than wide
+        h = c->h + delta;
+        w = (h * aspectratio) + delta;
+    }
+    resize(c, c->x, c->y, w, h, True);
+}
+
 
 void
 viewprev(const Arg *arg)

@@ -1,14 +1,3 @@
-#include <X11/XF86keysym.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include "fibonacci.c"
-#include "layouts.c"
-#include "movestack.c"
-#define TERMINAL "st"
-
 static const unsigned int borderpx  = 0;
 static const unsigned int gappx     = 10;
 static const unsigned int snap      = 32;
@@ -52,6 +41,10 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
+#include "fibonacci.c"
+#include "layouts.c"
+#include "movestack.c"
+
 static const Layout layouts[] = {
 	{ "[]=",      tile },
 //        { "[@]",      spiral },
@@ -77,17 +70,19 @@ static char dmenumon[2] = "0";
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+#include <X11/XF86keysym.h>
+#define TERMINAL "st"
 
 static const Key keys[] = {
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = (const char*[]){"st", NULL } } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstackvis,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstackvis,     {.i = -1 } },
         { MODKEY|ShiftMask,             XK_j,      focusstackhid,     {.i = +1 } },
         { MODKEY|ShiftMask,             XK_k,      focusstackhid,     {.i = +1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_period,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_slash,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,    {.v = (const char*[]){"alacritty", NULL } } },
@@ -174,7 +169,7 @@ static const Key keys[] = {
 	{ MODKEY,                  XK_Print,          spawn, {.v = (const char*[]){ "scrot", NULL } } },
 	{ MODKEY,                  XF86XK_AudioMute,    spawn, {.v = (const char*[]){ "pavucontrol", NULL } } },
 	{ MODKEY,                  XK_w,     spawn, {.v = (const char*[]){"firefox", NULL} } },
-        { MODKEY,                  XK_s,            spawn, {.v = (const char*[]){"rofi", "-show", "drun", NULL } } },
+        { MODKEY,                  XK_d,            spawn, {.v = (const char*[]){"rofi", "-show", "drun", NULL } } },
 	{ MODKEY,                  XK_v,             spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
 	{ MODKEY,                  XK_z,       spawn,   {.v = (const char*[]){"slock", NULL } } },
 	{ MODKEY|ShiftMask,        XK_w,      spawn,    {.v = (const char*[]){ TERMINAL, "sudo", "nmtui",  NULL } } },
