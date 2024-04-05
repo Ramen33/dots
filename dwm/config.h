@@ -184,6 +184,7 @@ static const Key keys[] = {
 	{ MODKEY,                  XK_g,      spawn,    {.v = (const char*[]){ "gedit", NULL } } },
 	{ MODKEY,                  XK_F11,    spawn,    {.v = (const char*[]){ "nitrogen", NULL } } },
 	{ MODKEY,                  XK_backslash, spawn, {.v = (const char*[]){ TERMINAL,  "ncmpcpp", NULL } } },
+	{ MODKEY|ShiftMask,        XK_backslash, spawn, {.v = (const char*[]){ "mpc", "update", NULL } } },
 	{ MODKEY,                  XF86XK_LaunchA,    spawn,    {.v = (const char*[]){ "thunderbird", NULL } } },
 	{ MODKEY,                  XK_e,         spawn,    {.v = (const char*[]){ TERMINAL, "lf", NULL } } },
         { MODKEY,                  XK_bracketleft, spawn,   {.v = (const char*[]){ "mpc", "prev", NULL } } },
