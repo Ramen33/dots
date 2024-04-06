@@ -195,8 +195,8 @@ static const Key keys[] = {
         { MODKEY|ShiftMask,        XK_backslash, spawn,   {.v = (const char*[]){ "mpc", "seek", "+5", NULL } } },
 	{ MODKEY,                  XK_Prior,     viewprev, {0} },
 	{ MODKEY,                  XK_Next,      viewnext, {0} },
-	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} }, // Decrease size while preserving aspect ratio
-        { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },  // Increase size while preserving aspect ratio
+	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} },
+        { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },
 };
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
