@@ -41,20 +41,24 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
-#include "fibonacci.c"
 #include "layouts.c"
-#include "movestack.c"
 
 static const Layout layouts[] = {
-	{ "[]=",      tile },
-//        { "[@]",      spiral },
-	{ "><>",      NULL },
-//	{ "[]=",      tile },
+	{ "[]=",      tile         },
+	{ "TTT",      bstack       },
+	{ "===",      bstackhoriz  },
+
+	{ "><>",      NULL    },
+	{ "HHH",      grid    },
+
+	{ "[D]",      deck    },
 	{ "[M]",      monocle },
-//	{ "[]=",       tile },
-	{ "[@]",      spiral },
+
+	{ "[@]",      spiral  },
 	{ "[\\]",     dwindle },
-	{ "HHH",      grid },
+
+        { "|M|",      centeredmaster         },
+	{ ">M>",      centeredfloatingmaster },
 };
 
 #define MODKEY Mod4Mask
@@ -88,11 +92,19 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, spawn,    {.v = (const char*[]){"alacritty", NULL } } },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_space,  zoom,      {0} },
-	{ MODKEY,                       XK_space,  togglefloating, {0} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]}  },
+	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[1]}  },
+	{ MODKEY|ControlMask,           XK_t,      setlayout,      {.v = &layouts[2]}  },
+	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]}  },
+	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[4]}  },
+	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[5]}  },
+	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[6]}  },
+	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[7]}  },
+	{ MODKEY|ShiftMask,             XK_i,      setlayout,      {.v = &layouts[8]}  },
+	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[9]}  },
+	{ MODKEY|ShiftMask,             XK_o,      setlayout,      {.v = &layouts[10]} },
+	{ MODKEY|ShiftMask,             XK_space,  zoom,                          {0} },
+	{ MODKEY,                       XK_space,  togglefloating,                {0} },
 	{ MODKEY,                       XK_Down,   moveresize,     {.v = "0x 25y 0w 0h" } },
 	{ MODKEY,                       XK_Up,     moveresize,     {.v = "0x -25y 0w 0h" } },
 	{ MODKEY,                       XK_Right,  moveresize,     {.v = "25x 0y 0w 0h" } },
@@ -134,9 +146,6 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_equal,                  11)
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 	{ MODKEY,                       XK_f,      togglefullscreen,  {0} },
-	{ MODKEY,                       XK_i,      setlayout,  {.v = &layouts[3]} },
-	{ MODKEY,                       XK_o,      setlayout,  {.v = &layouts[4]} },
-	{ MODKEY,                       XK_p,      setlayout,  {.v = &layouts[5]} },
 	{ Mod1Mask,                     XK_j,      moveresize, {.v = "0x 25y 0w 0h"} },
 	{ Mod1Mask,                     XK_k,      moveresize, {.v = "0x -25y 0w 0h"} },
         { Mod1Mask,                     XK_l,      moveresize, {.v = "25x 0y 0w 0h"} },
@@ -167,7 +176,10 @@ static const Key keys[] = {
 	{ 0,                       XF86XK_Display,    spawn, {.v = (const char*[]){ "arandr", NULL } } },
 	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%+", NULL } } },
 	{ MODKEY,                  XF86XK_AudioLowerVolume,    spawn, {.v = (const char*[]){ "/usr/bin/amixer", "-D", "pulse", "sset", "Master", "1%-", NULL } } },
-	{ MODKEY|ShiftMask,                  XK_Escape,         spawn, {.v = (const char*[]){ "off", NULL } } },
+        { MODKEY,                  XF86XK_MonBrightnessUp,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "100%", NULL } } },
+        { MODKEY,                  XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "1", NULL } } },
+        { MODKEY|ShiftMask,        XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "0", NULL } } },
+	{ MODKEY|ShiftMask,        XK_Escape,         spawn, {.v = (const char*[]){ "off", NULL } } },
 	{ MODKEY,                  XK_Print,          spawn, {.v = (const char*[]){ "scrot", NULL } } },
 	{ MODKEY,                  XF86XK_AudioMute,    spawn, {.v = (const char*[]){ "pavucontrol", NULL } } },
 	{ MODKEY,                  XK_w,     spawn, {.v = (const char*[]){"firefox", NULL} } },
@@ -184,6 +196,7 @@ static const Key keys[] = {
 	{ MODKEY,                  XK_g,      spawn,    {.v = (const char*[]){ "gedit", NULL } } },
 	{ MODKEY,                  XK_F11,    spawn,    {.v = (const char*[]){ "nitrogen", NULL } } },
 	{ MODKEY,                  XK_apostrophe, spawn, {.v = (const char*[]){ TERMINAL,  "ncmpcpp", NULL } } },
+	{ Mod1Mask,                XK_apostrophe, spawn, {.v = (const char*[]){  "ario", NULL } } },
 	{ MODKEY|ShiftMask,        XK_apostrophe, spawn, {.v = (const char*[]){ "mpc", "update", NULL } } },
 	{ MODKEY,                  XF86XK_LaunchA,    spawn,    {.v = (const char*[]){ "thunderbird", NULL } } },
 	{ MODKEY,                  XK_e,         spawn,    {.v = (const char*[]){ TERMINAL, "lf", NULL } } },
