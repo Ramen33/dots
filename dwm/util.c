@@ -1,4 +1,3 @@
-/* See LICENSE file for copyright and license details. */
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,3 +33,4 @@ ecalloc(size_t nmemb, size_t size)
 		die("calloc:");
 	return p;
 }
+

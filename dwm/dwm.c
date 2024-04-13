@@ -2754,7 +2754,7 @@ main(int argc, char *argv[])
 	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
 		fputs("warning: no locale support\n", stderr);
 	if (!(dpy = XOpenDisplay(NULL)))
-		die("dwm: cannot open display");
+		die("DWM: cannot open display");
 	checkotherwm();
 	setup();
 #ifdef __OpenBSD__
