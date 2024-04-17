@@ -1,8 +1,10 @@
 #!/bin/env sh
 
+# init
 printf "$$" > ~/.cache/pidofbar
 sec=0
 
+# modules
 update_cpu () {
 	cpu="$(grep -o "^[^ ]*" /proc/loadavg )"
 }
@@ -15,18 +17,23 @@ update_time () {
 	time="$(date "+  %b  %d  %Y  %a   %I:%M:%S %p")"
 }
 
-update_weather () {
-	weather="$(curl -s "wttr.in/Hawler?format="%t+%h+%w+%M""| sed -E "s/^(.).*\+/\1/")"
-}
+#update_weather () {
+#	weather="$(curl -s "wttr.in/Hawler?format="%t+%h+%w+%M""| sed -E "s/^(.).*\+/\1/")"
+#}
 
 update_bat () {
+	# you might need to change the path depending on your device
 	read -r bat_status </sys/class/power_supply/BAT0/status
+	#bat_status="$(cat /sys/class/power_supply/BAT0/status | sed 's/^\(..\).*/\1\')"
 	read -r bat_capacity </sys/class/power_supply/BAT0/capacity
+	#bat_capacity="$(cat /sys/class/power_supply/BAT0/capacity | sed 's/^\(..\).*/\1\')"
 	bat="$bat_capacity% $bat_status"
 }
 
 update_temp () {
 
+	#read -r temp </sys/class/thermal/thermal_zone0/temp
+        #sed 's/^\(..\).*/\1/'
 	temp="$(cat /sys/class/thermal/thermal_zone0/temp | sed 's/^\(..\).*/\1/')"
 }
 
@@ -34,7 +41,13 @@ update_vol () {
 	vol="$([ "$(pamixer --get-mute)" = "false" ] && printf 'VOL: ' || printf 'MUTE ')$(pamixer --get-volume)%"
 }
 
+#update_vol () {
+#       vol="$( pulsemixer --get-volume)%"
+#}
+
+
 update_backlight () {
+	# you might need to change the path depending on your device
 	read -r actual_brightness </sys/class/backlight/intel_backlight/actual_brightness
 	read -r max_brightness </sys/class/backlight/intel_backlight/max_brightness
 	backlight="BRI: $((actual_brightness*100/max_brightness))%"
@@ -42,33 +55,54 @@ update_backlight () {
 update_kern () {
 
 	kern="$(uname -r)"
+
 }
+
+
+update_mpd () {
+
+	mpd="$(mpc status | sed 'N;s/\n/ /;2q;d')"
+
+}
+
 #update_event () {
 #	event="$(calcurse -n | sed 1d | \
 #		sed -E "s_^ *\[(.*):(.*)\] ([^\t]*)\t?.*_[\1h \2m->\3]_")"
 #	[ "[]" = "$event" ] && event=""
 #}
+# modules that don't update on their own need to be run at the start for getting their initial value
 update_vol
 update_backlight
 display () {
-	xsetroot -name " Hawler: $weather < RAM: $ram  CPU: $cpu <  $temp C <  $kern <   $bat <  $backlight <  $vol < $time "
+	#printf "%s\n" " $event [$weather] [$memory $cpu] [$bat] [$backlight] [$vol] $time "
+	xsetroot -name "  RAM: $ram  CPU: $cpu <  $temp C <  $kern <   $bat <  $backlight <  $vol < $time < Music: $mpd "
 }
+# SIGNALLING
+# trap	"<function>;display"		"RTMIN+n"
 trap	"update_vol;display"		"RTMIN"
 trap	"update_backlight;display" 	"RTMIN+1"
 trap	"update_bat;display" 		"RTMIN+2"
+# to update it from external commands
+## kill -m "$(cat ~/.cache/pidofbar)"
+# where m = 34 + n
 
 while true
 do
 	sleep 1 & wait && {
+		# to update item ever n seconds with a offset of m
+		## [ $((sec % n)) -eq m ] && udpate_item
 		[ $((sec % 1 )) -eq 0 ] && update_time
 		[ $((sec % 1)) -eq 0 ] && update_cpu
 	        [ $((sec % 3)) -eq 0 ] && update_temp
 		[ $((sec % 1)) -eq 0 ] && update_ram
 		[ $((sec % 1)) -eq 0 ] && update_bat
-		[ $((sec % 3600)) -eq 2 ] && update_weather
+#		[ $((sec % 3600)) -eq 2 ] && update_weather
                 [ $((sec % 1)) -eq 0 ] && update_vol
                 [ $((sec % 1)) -eq 0 ] && update_backlight
 		[ $((sec % 3600)) -eq 0 ] && update_kern
+                [ $((sec % 1 )) -eq 0 ] && update_mpd
+		#[ $((sec % 300)) -eq 1 ] && update_event
+		# how often the display updates ( 5 seconds )
 		[ $((sec % 1 )) -eq 0 ] && display
 		sec=$((sec + 1))
 	}
