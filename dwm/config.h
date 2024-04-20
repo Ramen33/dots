@@ -1,4 +1,4 @@
-static const unsigned int borderpx  = 0;
+static const unsigned int borderpx  = 1;
 static const unsigned int gappx     = 10;
 static const unsigned int snap      = 32;
 static const int showbar            = 1;
@@ -11,14 +11,14 @@ static const char dmenufont[]       = "JetBrainsMono-Bold:size=6";
 static unsigned int baralpha        = 0xb0;
 static unsigned int borderalpha     = OPAQUE;
 static const char col_gray1[]       = "#181818"; //OG #222222
-static const char col_gray2[]       = "#444444";
+static const char col_gray2[]       = "#005577"; //OG #444444
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#1E1E2E"; //OG #005577 Purple #8D6298 Bl#2e3e64 C #1E1E2E
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_gray3, col_gray1, col_cyan },
+	[SchemeSel]  = { col_gray4, col_cyan,  col_gray2  },
 	[SchemeHid]  = { col_cyan,  col_gray1, col_cyan  },
 };
 
@@ -81,7 +81,7 @@ static const char *termcmd[]  = { "st", NULL };
 #define TERMINAL "st"
 
 static const Key keys[] = {
-	{ MODKEY,                       XK_s,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = (const char*[]){ "alacritty", NULL } } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = (const char*[]){"st", NULL } } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstackvis,     {.i = +1 } },
@@ -92,7 +92,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_slash,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|SHIFT,                 XK_Return, spawn,          {.v = (const char*[]){"alacritty", NULL } } },
+	{ MODKEY|SHIFT,                 XK_Return, spawn,          {.v = (const char*[]){ "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL } } },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                   XK_t,      setlayout,          {.v = &layouts[0]}  },
