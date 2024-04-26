@@ -1,4 +1,4 @@
-static const unsigned int borderpx  = 1;
+static const unsigned int borderpx  = 0;
 static const unsigned int gappx     = 10;
 static const unsigned int snap      = 32;
 static const int showbar            = 1;
@@ -6,21 +6,10 @@ static const int topbar             = 1;
 static const int usealtbar          = 0;
 static const char *altbarclass      = "Polybar";
 static const char *altbarcmd        = "$HOME/bar.sh";
-static const char *fonts[]          = { "JetBrainsMono-Bold:size=6" };
-static const char dmenufont[]       = "JetBrainsMono-Bold:size=6";
+static const char *fonts[]          = { "JetBrainsMono-Bold:size=7" };
+static const char dmenufont[]       = "JetBrainsMono-Bold:size=7";
 static unsigned int baralpha        = 0xb0;
 static unsigned int borderalpha     = OPAQUE;
-static const char col_gray1[]       = "#181818"; //OG #222222
-static const char col_gray2[]       = "#005577"; //OG #444444
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#1E1E2E"; //OG #005577 Purple #8D6298 Bl#2e3e64 C #1E1E2E
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_cyan },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_gray2  },
-	[SchemeHid]  = { col_cyan,  col_gray1, col_cyan  },
-};
 
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 //static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
@@ -41,6 +30,7 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
+#include "themes/gruvchad.h"
 #include "layouts.c"
 
 static const Layout layouts[] = {
@@ -74,7 +64,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 static char dmenumon[2] = "0";
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+//static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 #include <X11/XF86keysym.h>
@@ -92,7 +82,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_slash,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|SHIFT,                 XK_Return, spawn,          {.v = (const char*[]){ "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL } } },
+//	{ MODKEY|SHIFT,                 XK_Return, spawn,          {.v = (const char*[]){ "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL } } },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                   XK_t,      setlayout,          {.v = &layouts[0]}  },
@@ -144,10 +134,9 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	TAGKEYS(                        XK_0,                  9)
-	TAGKEYS(                        XK_minus,                 10)
+	TAGKEYS(                        XK_0,                      9)
+	TAGKEYS(                        XK_minus,                  10)
 	TAGKEYS(                        XK_equal,                  11)
-	{ MODKEY|SHIFT,             XK_e,      quit,           {0} },
 	{ MODKEY,                       XK_f,      togglefullscreen,  {0} },
 	{ ALTKEY,                     XK_j,      moveresize, {.v = "0x 25y 0w 0h"} },
 	{ ALTKEY,                     XK_k,      moveresize, {.v = "0x -25y 0w 0h"} },
@@ -187,10 +176,10 @@ static const Key keys[] = {
 	{ MODKEY,                  XF86XK_AudioMute,    spawn, {.v = (const char*[]){ "pavucontrol", NULL } } },
 	{ MODKEY,                  XK_w,     spawn, {.v = (const char*[]){"firefox", NULL} } },
         { MODKEY,                  XK_d,            spawn, {.v = (const char*[]){"rofi", "-show", "drun", NULL } } },
-        { MODKEY|SHIFT,        XK_d,            spawn, {.v = (const char*[]){"rofi", "-show", "run", NULL } } },
+        { MODKEY|SHIFT,            XK_d,            spawn, {.v = (const char*[]){"rofi", "-show", "run", NULL } } },
 	{ MODKEY,                  XK_v,             spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
 	{ MODKEY,                  XK_z,       spawn,   {.v = (const char*[]){"slock", NULL } } },
-	{ MODKEY|SHIFT,        XK_w,      spawn,    {.v = (const char*[]){ TERMINAL, "sudo", "nmtui",  NULL } } },
+	{ MODKEY|SHIFT,            XK_w,      spawn,    {.v = (const char*[]){ TERMINAL, "sudo", "nmtui",  NULL } } },
 	{ MODKEY,                  XK_r,      spawn,    {.v = (const char*[]){ TERMINAL, "sudo", "htop",   NULL } } },
 	{ MODKEY,		   XK_n,	   spawn,    {.v = (const char*[]){ TERMINAL,  "nvim", NULL } } },
 	{ MODKEY,                  XK_x,      spawn,    {.v = (const char*[]){"urxvt", NULL } } },
@@ -213,6 +202,7 @@ static const Key keys[] = {
 	{ MODKEY,                  XK_Next,      viewnext, {0} },
 	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} },
         { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },
+	{ MODKEY|SHIFT,             XK_e,      quit,           {0} },
 };
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */

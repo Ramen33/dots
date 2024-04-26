@@ -309,14 +309,14 @@ aspectresize(const Arg *arg)
     if (!selmon->sel)
         return;
     c = selmon->sel;
-    float aspectratio = c->w / (float)c->h; // Calculate current aspect ratio
+    float aspectratio = c->w / (float)c->h;
     float delta = *((float *)arg->v);
     int w, h;
 
-    if (aspectratio > 1) { // If the aspect ratio is wider than tall
+    if (aspectratio > 1) {
         w = c->w + delta;
         h = (w / aspectratio) + delta;
-    } else { // If the aspect ratio is taller than wide
+    } else {
         h = c->h + delta;
         w = (h * aspectratio) + delta;
     }
@@ -2128,8 +2128,8 @@ spawn(const Arg *arg)
 {
 	struct sigaction sa;
 
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
+//	if (arg->v == dmenucmd)
+//		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
