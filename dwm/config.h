@@ -139,6 +139,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,         view,                     {0} },
 	{ MODKEY,                       XK_q,           killclient,               {0} },
         { MODKEY|SHIFT,                 XK_q,           bulkill,            {.ui = 1} },
+        { MODKEY,                       XK_Prior,       shiftview,          {.i = -1} },
+        { MODKEY,                       XK_Next,        shiftview,          {.i = +1} },
 	{ MODKEY|SHIFT,                 XK_e,           quit,                     {0} },
 
 
@@ -222,9 +224,7 @@ static const Key keys[] = {
         { ALTKEY|CONTROL|SHIFT,   XK_l,      moveresizeedge, {.v = "R"} },
 
 
-/*	{ MODKEY,                  XK_Prior,     viewprev, {0} },
-	{ MODKEY,                  XK_Next,      viewnext, {0} },
-	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} },
+/*	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} },
         { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },*/
 };
 

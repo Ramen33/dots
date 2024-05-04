@@ -29,9 +29,8 @@ static void getfacts(Monitor *m, int msize, int ssize, float *mf, float *sf, int
 static void setgaps(int oh, int ov, int ih, int iv);
 static void killthis(Client *c);
 static void bulkill(const Arg *arg);
-/*void viewprev(const Arg *arg);
-void viewnext(const Arg *arg);
-void aspectresize(const Arg *arg);*/
+static void shiftview(const Arg *arg);
+//void aspectresize(const Arg *arg);
 
 /* Settings */
 #if !PERTAG_PATCH
@@ -977,27 +976,22 @@ bulkill(const Arg *arg)
     }
 }
 
+void
+shiftview(const Arg *arg) {
+	Arg shifted;
+
+	if(arg->i > 0) //left circular shift
+		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+			| (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+
+	else // right circular shift
+		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+			| selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+	view(&shifted);
+}
+
+
 /*void
-viewprev(const Arg *arg)
-{
-    if(selmon->tagset[selmon->seltags] > 1 << 0)
-        selmon->tagset[selmon->seltags] >>= 1;
-    else
-	selmon->tagset[selmon->seltags] = 1 << LENGTH(tags) - 1;
-    arrange(selmon);
-}
-
-void
-viewnext(const Arg *arg)
-{
-    if(selmon->tagset[selmon->seltags] < 1 << LENGTH(tags) - 1)
-        selmon->tagset[selmon->seltags] <<= 1;
-    else
-        selmon->tagset[selmon->seltags] = 1 << 0;
-    arrange(selmon);
-}
-
-void
 aspectresize(const Arg *arg)
 {
     Client *c;

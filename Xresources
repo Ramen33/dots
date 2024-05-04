@@ -7,8 +7,8 @@ Xft.lcdfilter: lcddefault
 
 !st.alpha: 0.85
 st.alpha: 0.75
-st.font: JetBrainsMonoNerdFont-BoldItalic:pixelsize=10
-
+!st.font: JetBrainsMonoNerdFont-BoldItalic:pixelsize=10
+st.font: JetBrainsMonoNerdFont-BoldItalic:pixelsize=12
 
 !*background: #1E1E2E
 !*foreground: #CDD6F4
@@ -23,6 +23,8 @@ st.font: JetBrainsMonoNerdFont-BoldItalic:pixelsize=10
 ! red
 *color1: #F38BA8
 *color9: #F38BA8
+!*color1: #fb4934
+!*color9: #fb4934
 
 ! green
 *color2: #A6E3A1
@@ -45,8 +47,10 @@ st.font: JetBrainsMonoNerdFont-BoldItalic:pixelsize=10
 *color14: #94E2D5
 
 ! white
-*color7: #BAC2DE
-*color15: #A6ADC8
+!*color7: #BAC2DE
+!*color15: #A6ADC8
+*color7: #ffffff
+*color15: #ffffff
 
 Xcursor.theme: Windows10Dark
-Xcursor.size: 16
+Xcursor.size: 12
