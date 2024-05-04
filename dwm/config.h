@@ -7,8 +7,9 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const unsigned int snap      = 32;
 static const int showbar            = 1;
 static const int topbar             = 1;
-static const int vertpad            = 7;       /* vertical padding of bar */
-static const int sidepad            = 6;       /* horizontal padding of bar */
+static const int vertpad            = 10;       /* vertical padding of bar */
+static const int sidepad            = 10;       /* horizontal padding of bar */
+static const char *barlayout        = "tsln|";
 static const char *fonts[]          = { "JetBrainsMono-Bold:size=7" };
 static const char dmenufont[]       = "JetBrainsMono-Bold:size=7";
 static unsigned int baralpha        = 0xb0;
@@ -31,7 +32,7 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
-#include "themes/blue.h"
+#include "themes/default.h"
 
 static const unsigned int stairpx   = 70;       /* depth of the stairs layout */
 static const int stairdirection     = 1;        /* 0: left-aligned, 1: right-aligned */

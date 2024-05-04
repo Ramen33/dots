@@ -14,7 +14,7 @@ update_ram () {
 }
 
 update_time () {
-	time="$(date "+  %b  %d  %Y  %a   %I:%M:%S %p")"
+	time="$(date "+  %b %d %Y %a   %I:%M:%S %p")"
 }
 
 #update_weather () {
@@ -40,11 +40,6 @@ update_temp () {
 update_vol () {
 	vol="$([ "$(pamixer --get-mute)" = "false" ] && printf 'VOL: ' || printf 'MUTE ')$(pamixer --get-volume)%"
 }
-
-#update_vol () {
-#       vol="$( pulsemixer --get-volume)%"
-#}
-
 
 update_backlight () {
 	# you might need to change the path depending on your device
@@ -75,7 +70,7 @@ update_vol
 update_backlight
 display () {
 	#printf "%s\n" " $event [$weather] [$memory $cpu] [$bat] [$backlight] [$vol] $time "
-	xsetroot -name "  RAM: $ram  CPU: $cpu <  $temp C <  $kern <   $bat <  $backlight <  $vol < $time < Music: $mpd "
+	xsetroot -name "                                                            RAM: $ram *  $temp C *   $bat *   $backlight *   $vol * $time *"
 }
 # SIGNALLING
 # trap	"<function>;display"		"RTMIN+n"
