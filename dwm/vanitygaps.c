@@ -10,7 +10,7 @@ static void incrivgaps(const Arg *arg);
 static void togglegaps(const Arg *arg);
 /* Layouts (delete the ones you do not need) */
 static void bstack(Monitor *m);
-static void bstackhoriz(Monitor *m);
+//static void bstackhoriz(Monitor *m);
 static void centeredmaster(Monitor *m);
 static void centeredfloatingmaster(Monitor *m);
 static void deck(Monitor *m);
@@ -22,10 +22,16 @@ static void spiral(Monitor *m);
 static void tile(Monitor *m);
 static void togglefloating(const Arg *arg);
 static void monocle(Monitor *m);
+static void stairs(Monitor *m);
 /* Internals */
 static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
 static void getfacts(Monitor *m, int msize, int ssize, float *mf, float *sf, int *mr, int *sr);
 static void setgaps(int oh, int ov, int ih, int iv);
+static void killthis(Client *c);
+static void bulkill(const Arg *arg);
+/*void viewprev(const Arg *arg);
+void viewnext(const Arg *arg);
+void aspectresize(const Arg *arg);*/
 
 /* Settings */
 #if !PERTAG_PATCH
@@ -268,7 +274,7 @@ bstack(Monitor *m)
 	}
 }
 
-static void
+/*static void
 bstackhoriz(Monitor *m)
 {
 	unsigned int i, n;
@@ -308,7 +314,7 @@ bstackhoriz(Monitor *m)
 			sy += HEIGHT(c) + ih;
 		}
 	}
-}
+}*/
 
 /*
  * Centred master layout + gaps
@@ -853,6 +859,43 @@ tile(Monitor *m)
 }
 
 void
+stairs(Monitor *m)
+{
+	unsigned int i, n, h, mw, my;
+	unsigned int ox, oy, ow, oh; /* stair offset values */
+	Client *c;
+
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+
+	if (n > m->nmaster)
+		mw = m->nmaster ? m->ww * m->mfact : 0;
+	else
+		mw = m->ww;
+
+	for (i = my = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		if (i < m->nmaster) {
+			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+			resize(c, m->wx, m->wy + my, mw - (2 * c->bw), h - (2 * c->bw), 0);
+			if (my + HEIGHT(c) < m->wh)
+				my += HEIGHT(c);
+		} else {
+			oy = i - m->nmaster;
+			ox = stairdirection ? n - i - 1 : (stairsamesize ? i - m->nmaster : 0);
+			ow = stairsamesize ? n - m->nmaster - 1 : n - i - 1;
+			oh = stairsamesize ? ow : i - m->nmaster;
+			resize(c,
+			       m->wx + mw + (ox * stairpx),
+			       m->wy + (oy * stairpx),
+			       m->ww - mw - (2 * c->bw) - (ow * stairpx),
+			       m->wh - (2 * c->bw) - (oh * stairpx),
+			       0);
+		}
+	}
+}
+
+void
 movestack(const Arg *arg) {
 	Client *c = NULL, *p = NULL, *pc = NULL, *i;
 
@@ -900,4 +943,78 @@ movestack(const Arg *arg) {
 		arrange(selmon);
 	}
 }
+
+void
+killthis(Client *c) {
+	if (!sendevent(c, wmatom[WMDelete])) {
+		XGrabServer(dpy);
+		XSetErrorHandler(xerrordummy);
+		XSetCloseDownMode(dpy, DestroyAll);
+		XKillClient(dpy, c->win);
+		XSync(dpy, False);
+		XSetErrorHandler(xerror);
+		XUngrabServer(dpy);
+	}
+}
+
+void
+bulkill(const Arg *arg)
+{
+    Client *c;
+
+	if (!selmon->sel)
+		return;
+
+    if (!arg->ui || arg->ui == 0) {
+        killthis(selmon->sel);
+        return;
+    }
+
+    for (c = selmon->clients; c; c = c->next) {
+        if (!ISVISIBLE(c) || (arg->ui == 1 && c == selmon->sel))
+            continue;
+        killthis(c);
+    }
+}
+
+/*void
+viewprev(const Arg *arg)
+{
+    if(selmon->tagset[selmon->seltags] > 1 << 0)
+        selmon->tagset[selmon->seltags] >>= 1;
+    else
+	selmon->tagset[selmon->seltags] = 1 << LENGTH(tags) - 1;
+    arrange(selmon);
+}
+
+void
+viewnext(const Arg *arg)
+{
+    if(selmon->tagset[selmon->seltags] < 1 << LENGTH(tags) - 1)
+        selmon->tagset[selmon->seltags] <<= 1;
+    else
+        selmon->tagset[selmon->seltags] = 1 << 0;
+    arrange(selmon);
+}
+
+void
+aspectresize(const Arg *arg)
+{
+    Client *c;
+    if (!selmon->sel)
+        return;
+    c = selmon->sel;
+    float aspectratio = c->w / (float)c->h;
+    float delta = *((float *)arg->v);
+    int w, h;
+
+    if (aspectratio > 1) {
+        w = c->w + delta;
+        h = (w / aspectratio) + delta;
+    } else {
+        h = c->h + delta;
+        w = (h * aspectratio) + delta;
+    }
+    resize(c, c->x, c->y, w, h, True);
+}*/
 

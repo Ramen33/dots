@@ -12,8 +12,8 @@ static const char pink[]        = "#cc7f94";
 static const char col_borderbar[]  = "#1e2122"; // inner border
 static const char *colors[][3]      = {
 	//               fg         bg         border
-	[SchemeNorm] = { blue, gray4, gray2 },
-	[SchemeSel]  = { gray4, blue,  blue  },
-	[SchemeHid]  = { blue,  gray4, gray2  },
+	[SchemeNorm] = { blue, black, gray2 },
+	[SchemeSel]  = { black, blue,  blue  },
+	[SchemeHid]  = { blue,  black, gray2  },
 };
 
