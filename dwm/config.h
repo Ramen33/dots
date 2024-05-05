@@ -1,8 +1,13 @@
+#define TERMINAL "st"
+#define TERMCLASS "St"
+#define BROWSER "Firefox"
+
 static const unsigned int borderpx  = 0;
 static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 15;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 15;       /* vert outer gap between windows and screen edge */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const unsigned int snap      = 32;
 static const int showbar            = 1;
@@ -23,8 +28,14 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+/*	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },*/
+
+	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",    NULL,     NULL,            0,         1,          0,           0,        -1 },
+	{ BROWSER,   NULL,     NULL,            1 << 8,    0,          0,          -1,        -1 },
+	{ TERMCLASS, NULL,     NULL,            0,         0,          1,           0,        -1 },
+	{ NULL,      NULL,     "Event Tester",  0,         0,          0,           1,        -1 }, /* xev */
 };
 
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
@@ -76,13 +87,12 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0";
 
 #include <X11/XF86keysym.h>
-#define TERMINAL "st"
 
 static const Key keys[] = {
 	{ MODKEY,                  XK_Return, spawn, {.v = (const char*[]){ TERMINAL, NULL } } },
 	{ MODKEY,                  XK_d,      spawn, {.v = (const char*[]){"rofi", "-show", "drun", NULL } } },
         { MODKEY|SHIFT,            XK_d,      spawn, {.v = (const char*[]){"rofi", "-show", "run", NULL } } },
-	{ MODKEY,                  XK_w,      spawn, {.v = (const char*[]){"firefox", NULL} } },
+	{ MODKEY,                  XK_w,      spawn, {.v = (const char*[]){ BROWSER, NULL} } },
 	{ MODKEY|SHIFT,            XK_w,      spawn, {.v = (const char*[]){ TERMINAL, "sudo", "nmtui",  NULL } } },
 	{ MODKEY,                  XK_a,      spawn, {.v = (const char*[]){"pcmanfm", NULL } } },
 	{ MODKEY|SHIFT,            XK_a,      spawn, {.v = (const char*[]){ TERMINAL, "lf", NULL } } },
