@@ -1,6 +1,6 @@
 #define TERMINAL "st"
 #define TERMCLASS "St"
-#define BROWSER "Firefox"
+#define BROWSER "firefox"
 
 static const unsigned int borderpx  = 0;
 static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
@@ -33,7 +33,7 @@ static const Rule rules[] = {
 
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,            0,         1,          0,           0,        -1 },
-	{ BROWSER,   NULL,     NULL,            1 << 8,    0,          0,          -1,        -1 },
+	{ "Firefox", NULL,     NULL,            1 << 8,    0,          0,          -1,        -1 },
 	{ TERMCLASS, NULL,     NULL,            0,         0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester",  0,         0,          0,           1,        -1 }, /* xev */
 };
