@@ -12,8 +12,8 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const unsigned int snap      = 32;
 static const int showbar            = 1;
 static const int topbar             = 1;
-static const int vertpad            = 10;       /* vertical padding of bar */
-static const int sidepad            = 10;       /* horizontal padding of bar */
+static const int vertpad            = 7;       /* vertical padding of bar */
+static const int sidepad            = 7;       /* horizontal padding of bar */
 static const char *barlayout        = "tsln|";
 static const char *fonts[]          = { "JetBrainsMono-Bold:size=7" };
 static const char dmenufont[]       = "JetBrainsMono-Bold:size=7";
