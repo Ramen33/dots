@@ -3,8 +3,8 @@
 #define BROWSER "firefox"
 
 static const unsigned int borderpx  = 0;
-static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
+static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 20;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 15;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 15;       /* vert outer gap between windows and screen edge */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -40,7 +40,7 @@ static const Rule rules[] = {
 
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 #include "themes/default.h"
@@ -97,18 +97,18 @@ static const Key keys[] = {
 	{ MODKEY,                  XK_a,      spawn, {.v = (const char*[]){"pcmanfm", NULL } } },
 	{ MODKEY|SHIFT,            XK_a,      spawn, {.v = (const char*[]){ TERMINAL, "lf", NULL } } },
 	{ MODKEY,                  XK_z,      spawn, {.v = (const char*[]){"slock", NULL } } },
-	{ MODKEY,                  XK_v,      spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
 	{ MODKEY,                  XK_s,      spawn, {.v = (const char*[]){ "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", gray3, "-sb", blue, "-sf", gray4, NULL } } },
 	{ MODKEY,                  XK_r,      spawn, {.v = (const char*[]){ TERMINAL, "sudo", "htop",   NULL } } },
 	{ MODKEY,		   XK_n,      spawn, {.v = (const char*[]){ TERMINAL,  "nvim", NULL } } },
 	{ MODKEY,                  XK_g,      spawn, {.v = (const char*[]){ "gedit", NULL } } },
 
 
-	{ 0,                       XF86XK_MonBrightnessUp,     spawn, {.v = (const char*[]){ "brightnessctl", "set", "10%+", NULL } } },
-        { MODKEY,                  XF86XK_MonBrightnessUp,     spawn, {.v = (const char*[]){ "brightnessctl", "set", "100%", NULL } } },
-        { 0,                       XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "10%-", NULL } } },
-        { MODKEY,                  XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "1", NULL } } },
-        { MODKEY|SHIFT,            XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "brightnessctl", "set", "0", NULL } } },
+	{ 0,                       XF86XK_MonBrightnessUp,     spawn, {.v = (const char*[]){ "xbacklight", "+10", NULL } } },
+	{ MODKEY|SHIFT,            XF86XK_MonBrightnessUp,     spawn, {.v = (const char*[]){ "xbacklight", "+1", NULL } } },
+        { MODKEY,                  XF86XK_MonBrightnessUp,     spawn, {.v = (const char*[]){ "xbacklight", "=", "100", NULL } } },
+        { 0,                       XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "xbacklight", "-10", NULL } } },
+        { MODKEY|SHIFT,            XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "xbacklight", "-1", NULL } } },
+        { MODKEY,                  XF86XK_MonBrightnessDown,   spawn, {.v = (const char*[]){ "xbacklight", "=", "1", NULL } } },
     	{ 0,                       XF86XK_AudioLowerVolume,    spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Master", "5%-", NULL } } },
 	{ MODKEY,                  XF86XK_AudioLowerVolume,    spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Master", "1%-", NULL } } },
     	{ 0,                       XF86XK_AudioMute,           spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Master", "toggle", NULL } } },
@@ -117,8 +117,9 @@ static const Key keys[] = {
 	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Master", "1%+", NULL } } },
 	{ 0,                       XF86XK_AudioMicMute,        spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Capture", "toggle", NULL } } },
 
-	{ 0,                       XF86XK_Tools,    spawn, {.v = (const char *[]){"lxqt-config", NULL} } },
-	{ 0,                       XF86XK_Explorer, spawn, {.v = (const char *[]){"nitrogen", NULL } } },
+	{ MODKEY,                  XF86XK_WakeUp,   spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
+	{ 0,                       XF86XK_Tools,    spawn, {.v = (const char*[]){"lxqt-config", NULL} } },
+	{ 0,                       XF86XK_Explorer, spawn, {.v = (const char*[]){"nitrogen", NULL } } },
 	{ 0,                       XK_Print,        spawn, {.v = (const char*[]){ "scrot", NULL } } },
 	{ 0,                       XF86XK_Search,   spawn, {.v = (const char*[]){ "fsearch", NULL } } },
 	{ 0,                       XF86XK_Display,  spawn, {.v = (const char*[]){ "arandr", NULL } } },
@@ -232,7 +233,6 @@ static const Key keys[] = {
         { ALTKEY|CONTROL|SHIFT,   XK_j,      moveresizeedge, {.v = "B"} },
         { ALTKEY|CONTROL|SHIFT,   XK_h,      moveresizeedge, {.v = "L"} },
         { ALTKEY|CONTROL|SHIFT,   XK_l,      moveresizeedge, {.v = "R"} },
-
 
 /*	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} },
         { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },*/
