@@ -1,8 +1,5 @@
-/* See LICENSE file for copyright and license details. */
-
 /*
  * appearance
- *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "JetBrainsMono-Bold:pixelsize=8:antialias=false:autohint=false";
