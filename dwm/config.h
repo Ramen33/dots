@@ -231,8 +231,6 @@ static const Key keys[] = {
         { ALTKEY|CONTROL|SHIFT,   XK_h,      moveresizeedge, {.v = "L"} },
         { ALTKEY|CONTROL|SHIFT,   XK_l,      moveresizeedge, {.v = "R"} },
 
-/*	{ MODKEY,                  XK_Home, aspectresize, {.v = (float []){10}} },
-        { MODKEY,                  XK_End,  aspectresize, {.v = (float []){-10}} },*/
 };
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */

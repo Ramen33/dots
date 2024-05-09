@@ -30,7 +30,6 @@ static void setgaps(int oh, int ov, int ih, int iv);
 static void killthis(Client *c);
 static void bulkill(const Arg *arg);
 static void shiftview(const Arg *arg);
-//void aspectresize(const Arg *arg);
 
 /* Settings */
 #if !PERTAG_PATCH
@@ -989,26 +988,4 @@ shiftview(const Arg *arg) {
 			| selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
 	view(&shifted);
 }
-
-
-/*void
-aspectresize(const Arg *arg)
-{
-    Client *c;
-    if (!selmon->sel)
-        return;
-    c = selmon->sel;
-    float aspectratio = c->w / (float)c->h;
-    float delta = *((float *)arg->v);
-    int w, h;
-
-    if (aspectratio > 1) {
-        w = c->w + delta;
-        h = (w / aspectratio) + delta;
-    } else {
-        h = c->h + delta;
-        w = (h * aspectratio) + delta;
-    }
-    resize(c, c->x, c->y, w, h, True);
-}*/
 
