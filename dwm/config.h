@@ -2,18 +2,18 @@
 #define TERMCLASS "St"
 #define BROWSER "firefox"
 
-static const unsigned int borderpx  = 0;
+static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 20;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 15;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 15;       /* vert outer gap between windows and screen edge */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-static const unsigned int snap      = 32;
-static const int showbar            = 1;
-static const int topbar             = 1;
-static const int vertpad            = 7;       /* vertical padding of bar */
-static const int sidepad            = 7;       /* horizontal padding of bar */
+static const int showbar            = 1;        /* 0 means no bar */
+static const int topbar             = 1;        /* 0 means bottom bar */
+static const int vertpad            = 7;        /* vertical padding of bar */
+static const int sidepad            = 7;        /* horizontal padding of bar */
 static const char *barlayout        = "tsln|";
 static const char *fonts[]          = { "JetBrainsMono-Bold:size=7" };
 static const char dmenufont[]       = "JetBrainsMono-Bold:size=7";
@@ -27,9 +27,6 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-/*	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },*/
 
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,            0,         1,          0,           0,        -1 },
@@ -43,7 +40,7 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
-#include "themes/default.h"
+#include "themes/bluet.h"
 
 static const unsigned int stairpx   = 70;       /* depth of the stairs layout */
 static const int stairdirection     = 1;        /* 0: left-aligned, 1: right-aligned */
@@ -96,6 +93,7 @@ static const Key keys[] = {
 	{ MODKEY|SHIFT,            XK_w,      spawn, {.v = (const char*[]){ TERMINAL, "sudo", "nmtui",  NULL } } },
 	{ MODKEY,                  XK_a,      spawn, {.v = (const char*[]){"pcmanfm", NULL } } },
 	{ MODKEY|SHIFT,            XK_a,      spawn, {.v = (const char*[]){ TERMINAL, "lf", NULL } } },
+	{ MODKEY,                  XK_v,      spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
 	{ MODKEY,                  XK_z,      spawn, {.v = (const char*[]){"slock", NULL } } },
 	{ MODKEY,                  XK_s,      spawn, {.v = (const char*[]){ "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", gray3, "-sb", blue, "-sf", gray4, NULL } } },
 	{ MODKEY,                  XK_r,      spawn, {.v = (const char*[]){ TERMINAL, "sudo", "htop",   NULL } } },
@@ -117,8 +115,7 @@ static const Key keys[] = {
 	{ MODKEY,                  XF86XK_AudioRaiseVolume,    spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Master", "1%+", NULL } } },
 	{ 0,                       XF86XK_AudioMicMute,        spawn, {.v = (const char*[]){ "amixer", "-D", "pulse", "sset", "Capture", "toggle", NULL } } },
 
-	{ MODKEY,                  XF86XK_WakeUp,   spawn, {.v = (const char*[]){"sudo","systemctl", "suspend", NULL } } },
-	{ 0,                       XF86XK_Tools,    spawn, {.v = (const char*[]){"lxqt-config", NULL} } },
+	{ 0,                       XF86XK_Tools,    spawn, {.v = (const char*[]){"lxappearance", NULL} } },
 	{ 0,                       XF86XK_Explorer, spawn, {.v = (const char*[]){"nitrogen", NULL } } },
 	{ 0,                       XK_Print,        spawn, {.v = (const char*[]){ "scrot", NULL } } },
 	{ 0,                       XF86XK_Search,   spawn, {.v = (const char*[]){ "fsearch", NULL } } },
