@@ -4,8 +4,8 @@
 
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 20;       /* vert inner gap between windows */
+static const unsigned int gappih    = 30;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 30;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 15;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 15;       /* vert outer gap between windows and screen edge */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -15,8 +15,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 7;        /* vertical padding of bar */
 static const int sidepad            = 7;        /* horizontal padding of bar */
 static const char *barlayout        = "tsln|";
-static const char *fonts[]          = { "JetBrainsMono-Bold:size=7" };
-static const char dmenufont[]       = "JetBrainsMono-Bold:size=7";
+static const char *fonts[]          = { "JetBrainsMono:size=7", "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"};
+static const char dmenufont[]       = "JetBrainsMono:size=7";
 static unsigned int baralpha        = 0xb0;
 static unsigned int borderalpha     = OPAQUE;
 
@@ -29,7 +29,7 @@ static const Rule rules[] = {
 	 */
 
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,     NULL,            0,         1,          0,           0,        -1 },
+/*	{ "Gimp",    NULL,     NULL,            0,         1,          0,           0,        -1 }, */
 	{ "Firefox", NULL,     NULL,            1 << 8,    0,          0,          -1,        -1 },
 	{ TERMCLASS, NULL,     NULL,            0,         0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester",  0,         0,          0,           1,        -1 }, /* xev */
@@ -40,7 +40,7 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
-#include "themes/bluet.h"
+#include "themes/oranget.h"
 
 static const unsigned int stairpx   = 70;       /* depth of the stairs layout */
 static const int stairdirection     = 1;        /* 0: left-aligned, 1: right-aligned */
