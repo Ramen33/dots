@@ -33,6 +33,10 @@ update_time () { time="$(~/scripts/statusbar/sb-clock)"
 #	weather="$(curl -s "wttr.in/Hawler?format="%t+%h+%w+%M""| sed -E "s/^(.).*\+/\1/")"
 #}
 
+
+#update_weather () { weather="$(~/scripts/statusbar/sb-forecast)"
+#}
+
 #update_bat () {
 #	# you might need to change the path depending on your device
 #	read -r bat_status </sys/class/power_supply/BAT0/status
@@ -100,7 +104,7 @@ update_vol
 update_backlight
 display () {
 	#printf "%s\n" " $event [$weather] [$memory $cpu] [$bat] [$backlight] [$vol] $time "
-	xsetroot -name "                    WiFi: $int * $traf * $pac * HOME: $disk * RAM: $ram * CPU: $cpu  $cpubars  * $bat *  $backlight * $vol * $time *"
+	xsetroot -name "  * WiFi: $int * $traf * $pac * HOME: $disk * RAM: $ram * CPU: $cpu  $cpubars  * $bat *  $backlight * $vol * $time * "
 }
 # SIGNALLING
 # trap	"<function>;display"		"RTMIN+n"

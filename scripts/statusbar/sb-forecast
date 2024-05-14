@@ -3,7 +3,7 @@
 # Displays today's precipication chance (☔), and daily low (🥶) and high (🌞).
 # Usually intended for the statusbar.
 
-url="${WTTRURL:-wttr.in}"
+url="${WTTRURL:-wttr.in/Hawler}"
 weatherreport="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
 
 # Get a weather report from 'wttr.in' and save it locally.
