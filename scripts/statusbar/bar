@@ -64,8 +64,14 @@ update_vol () {
 #update_vol () { vol="$(~/scripts/statusbar/sb-volume)"
 #}
 
-update_disk () { disk="$(~/scripts/statusbar/sb-disk)"
+update_home () { home="$(~/scripts/statusbar/sb-home)"
 }
+
+update_root () { root="$(~/scripts/statusbar/sb-root)"
+}
+
+#update_mnt () { mnt="$(~/scripts/statusbar/sb-mnt)"
+#}
 
 update_internet () { int="$(~/scripts/statusbar/sb-internet)"
 }
@@ -104,7 +110,7 @@ update_vol
 update_backlight
 display () {
 	#printf "%s\n" " $event [$weather] [$memory $cpu] [$bat] [$backlight] [$vol] $time "
-	xsetroot -name "  * WiFi: $int * $traf * $pac * HOME: $disk * RAM: $ram * CPU: $cpu  $cpubars  * $bat *  $backlight * $vol * $time * "
+	xsetroot -name "  * WiFi: $int * $traf * $pac * ROOT: $root * HOME: $home * RAM: $ram * CPU: $cpu  $cpubars  * $bat *  $backlight * $vol * $time * "
 }
 # SIGNALLING
 # trap	"<function>;display"		"RTMIN+n"
@@ -128,7 +134,9 @@ do
 		[ $((sec % 1)) -eq 0 ] && update_bat
 #		[ $((sec % 3600)) -eq 2 ] && update_weather
                 [ $((sec % 1)) -eq 0 ] && update_vol
-                [ $((sec % 30)) -eq 0 ] && update_disk
+                [ $((sec % 30)) -eq 0 ] && update_home
+                [ $((sec % 30)) -eq 0 ] && update_root
+#                [ $((sec % 5)) -eq 0 ] && update_mnt
                 [ $((sec % 5)) -eq 0 ] && update_internet
                 [ $((sec % 1)) -eq 0 ] && update_nettraf
                 [ $((sec % 1800)) -eq 0 ] && update_pacpackages
